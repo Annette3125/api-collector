@@ -172,3 +172,11 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Virtual environments
+.venv/
+venv/
+
+# PyCharm IDE
+.idea/
+*.iml
