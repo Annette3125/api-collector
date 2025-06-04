@@ -137,11 +137,22 @@ Time - tz=Europe/Vilnius
  - Method: GET
 
    - Parameters:
-      "function": "TIME_SERIES_DAILY",
-      "smbol": symbol,
-      "outputsize": "compact",
-      "apikey": API_KEY,
+ 
+      - - "function": "TIME_SERIES_DAILY", required: function,
+   The time series of your choice. In this case, function=TIME_SERIES_DAILY
 
+   
+      - - "symbol": symbol, 
+required: symbol, required: symbol,
+The name of the equity of your choice. For example: symbol=IBM
+      
+      - - "outputsize": "compact",
+optional
+
+      - - "apikey": API_KEY, 
+required: "apikey"
+Your API key.
+Claim your free API key [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
 
 
 
