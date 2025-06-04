@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-API_KEY=os.getenv("ALPHA_VANTAGE_API_KEY")
+API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 BASE_URL = "https://www.alphavantage.co/query"
 
 
@@ -13,9 +13,8 @@ def get_data_daily(symbol: str) -> pd.DataFrame:
         "function": "TIME_SERIES_DAILY",
         "symbol": symbol,
         "outputsize": "compact",
-        "apikey": API_KEY
+        "apikey": API_KEY,
     }
-
 
     response = requests.get(BASE_URL, params=params)
     data = response.json().get("Time Series (Daily)", {})
@@ -24,17 +23,20 @@ def get_data_daily(symbol: str) -> pd.DataFrame:
     print("First keys:", list(data.keys())[:3])
 
     df = pd.DataFrame.from_dict(data, orient="index")
-    df = df.rename(columns={
-        "1. open": "open",
-        "2. high": "high",
-        "3. low": "low",
-        "4. close": "close",
-        "5. volume": "volume"
-    })
+    df = df.rename(
+        columns={
+            "1. open": "open",
+            "2. high": "high",
+            "3. low": "low",
+            "4. close": "close",
+            "5. volume": "volume",
+        }
+    )
 
     df.index = pd.to_datetime(df.index)
     print(response.json())
     return df.astype(float)
+
 
 def main():
     symbols = ["AAPL", "GOOGL", "MSFT"]
@@ -47,5 +49,6 @@ def main():
     result.to_csv("data/new/stock_data.csv")
     print("Saved data/new/stock_data.csv")
 
-if __name__== "__main__":
+
+if __name__ == "__main__":
     main()
