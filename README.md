@@ -1,7 +1,7 @@
-# Api-collector
+# api-collector
 
 API Data Collector: fetches, processes & saves via Alpha Vantage API 
-(Python, requests, pandas, CSV output, dotenv, schedule).
+Technologies: Python, requests, pandas, python-dotenv, schedule.
 
 
 ## Prerequisites
@@ -81,8 +81,7 @@ pip install black isort
 ```
 
 
-## Usage and Running
-
+## Configuration
 #### Set environment variables:
 
 Create .env file in the project's root directory and add environment variable to this file.
@@ -94,6 +93,7 @@ ALPHA_VANTAGE_API_KEY=<ATTUYE7TR1MNPO1R>
 
 ```
 
+## Usage and Running
 
 #### How to run script:
 
@@ -101,25 +101,21 @@ ALPHA_VANTAGE_API_KEY=<ATTUYE7TR1MNPO1R>
 python get_data.py
 
 ```
+
+Saves data/new/stock_data.csv with columns: date, open, high
 CSV file will be generated in directory data/new/.
 
-There is example of csv output:
+Example of csv output:
 
-,open,high,low,close,volume,symbol
+```
+data,open,high,low,close,volume,symbol
 2025-05-30,199.37,201.96,196.78,200.85,70819942.0,AAPL
-
 2025-05-29,203.575,203.81,198.51,199.95,51477938.0,AAPL
-
 2025-05-20,166.43,168.5,162.9,163.98,46607656.0,GOOGL
-
 2025-05-19,164.51,166.64,164.22,166.54,30426097.0,GOOGL
-
 2025-04-10,382.06,383.9,367.8,381.35,38024368.0,MSFT
-
 2025-04-09,353.535,393.225,353.1,390.49,50199696.0,MSFT
-
-
-
+```
 
 #### How to run scheduler:
 
@@ -132,7 +128,7 @@ Time - tz=Europe/Vilnius
 
 ### Api references
 
- - URL: https://www.alphavantage.co/
+ - Base URL: https://www.alphavantage.co/
 
  - Method: GET
 
@@ -141,7 +137,7 @@ Time - tz=Europe/Vilnius
       - - "function": "TIME_SERIES_DAILY", required: function,
    The time series of your choice. In this case, function=TIME_SERIES_DAILY
 
-   
+
       - - "symbol": symbol, 
 required: symbol, required: symbol,
 The name of the equity of your choice. For example: symbol=IBM
@@ -151,9 +147,9 @@ optional
 
       - - "apikey": API_KEY, 
 required: "apikey"
-Your API key.
-Claim your free API key [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
+Your API key.\
 
+Claim your free API key [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
 
 
 
@@ -164,6 +160,15 @@ environment:
 deactivate
 ```
 And activate as you start again.
+
+Future Improvements
+
+ - - Add SQLite or Django ORM integration for persistent storage.
+ - - Implement unit tests with pytest for cure functions.
+ - - Provide data analysis and visualisation modules (matplotlib, Chart.js)
+
+
+Created by Annette demonstrating import, clean, transform & augment of financial data.
 
 
 
