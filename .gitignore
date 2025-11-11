@@ -180,3 +180,7 @@ venv/
 # PyCharm IDE
 .idea/
 *.iml
+
+# data snapshots
+data/new/
+!data/new/.keep
