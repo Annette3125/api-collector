@@ -1,7 +1,7 @@
 import schedule
 import time
 import logging
-from get_data import main as run_job
+from api_collector.get_data import main as run_job
 
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
