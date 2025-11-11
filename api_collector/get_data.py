@@ -15,7 +15,7 @@ API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 BASE_URL = "https://www.alphavantage.co/query"
 SYMBOLS = os.getenv("SYMBOLS", "AAPL,GOOGL,MSFT").split(",")
 
-DATA_DIR = os.getenv("DATA_DIR", "data/new")
+DATA_DIR = os.getenv("DATA_DIR", "../data/new")
 os.makedirs(DATA_DIR, exist_ok=True)
 
 logging.basicConfig(
