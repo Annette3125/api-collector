@@ -1,16 +1,53 @@
-# api-collector
+# API-collector
 
-API Data Collector: fetches, processes & saves via Alpha Vantage API 
-Technologies: Python, requests, pandas, python-dotenv, schedule.
+A small **ETL-style data pipeline** project that demonstrates data extraction, transformation, and loading using the **Alpha Vantage API**.
 
+The script collects daily stock data for several symbols, cleans and validates it, and saves both CSV and Parquet snapshots for further analysis.
+
+---
+
+## 🧩 Features
+
+### Extract
+- Fetches stock data from Alpha Vantage API (`TIME_SERIES_DAILY`)
+- Supports multiple symbols (configurable in `.env`)
+- Handles rate limits and API errors
+
+### Transform
+- Cleans and renames columns  
+- Converts types to numeric and datetime  
+- Removes duplicates and invalid values  
+- Sorts data in ascending date order
+
+### Load
+- Saves results to CSV and (optionally) Parquet  
+- Keeps a timestamped history and updates `stock_data_latest.csv`
+
+---
+
+## 🛠️ Technologies
+
+- **Python 3.11+**
+- **Requests** – API integration  
+- **Pandas** – data transformation  
+- **python-dotenv** – environment management  
+- **Schedule / Logging** – automation & monitoring  
+- **Pytest** – unit testing  
+
+---
+
+## ⚙️ Setup
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
 - **Python 3.11+** installed  
-  Download from https://www.python.org/downloads/  
-- **Git** installed (for cloning the repo) 
+- [Python 3.11+](https://www.python.org/downloads/)
+- [Git](https://git-scm.com/downloads)
+
+
+### Installation Steps
 
 ### Code Editor
 
@@ -81,7 +118,7 @@ pip install black isort
 ```
 
 
-## Configuration
+🔑  Configuration
 #### Set environment variables:
 
 Create .env file in the project's root directory and add environment variable to this file.
@@ -89,11 +126,16 @@ Create .env file in the project's root directory and add environment variable to
 Example '.env' file:
 
 ```                   
-ALPHA_VANTAGE_API_KEY=<ATTUYE7TR1MNPO1R>
+ALPHA_VANTAGE_API_KEY=<your-api-key>
+SYMBOLS=AAPL,GOOGL,MSFT
+DATA_DIR=data/new
+RATE_LIMIT_SLEEP=15
 
 ```
 
-## Usage and Running
+You can get a free API key from [Alpha Vantage](https://youtu.be/uqUoILc_1NY?si=BGdpGAePwqGA4pTL)￼.
+
+▶️ Usage and Running
 
 #### How to run script:
 
@@ -102,6 +144,11 @@ python get_data.py
 
 ```
 
+Run the daily schedular:
+
+```commandline
+python scheduler.py
+```
 Saves data/new/stock_data.csv with columns: date, open, high
 CSV file will be generated in directory data/new/.
 
@@ -109,12 +156,11 @@ Example of csv output:
 
 ```
 data,open,high,low,close,volume,symbol
-2025-05-30,199.37,201.96,196.78,200.85,70819942.0,AAPL
-2025-05-29,203.575,203.81,198.51,199.95,51477938.0,AAPL
-2025-05-20,166.43,168.5,162.9,163.98,46607656.0,GOOGL
-2025-05-19,164.51,166.64,164.22,166.54,30426097.0,GOOGL
-2025-04-10,382.06,383.9,367.8,381.35,38024368.0,MSFT
-2025-04-09,353.535,393.225,353.1,390.49,50199696.0,MSFT
+2025-11-04,511.76,515.55,507.84,514.33,20958663,MSFT
+2025-11-05,513.3,514.83,506.575,507.16,22883851,MSFT
+2025-11-06,505.66,505.7,495.81,497.1,27406496,MSFT
+2025-11-07,496.945,499.377,493.25,496.82,24019764,MSFT
+2025-11-10,500.035,506.85,498.8,506.0,26045011,MSFT
 ```
 
 #### How to run scheduler:
@@ -123,52 +169,32 @@ data,open,high,low,close,volume,symbol
 python scheduler.py
 ```
 
-Time - tz=Europe/Vilnius
+🧪 Testing
 
-
-### Api references
-
- - Base URL: https://www.alphavantage.co/
-
- - Method: GET
-
-   - Parameters:
- 
-      - - "function": "TIME_SERIES_DAILY", required: function,
-   The time series of your choice. In this case, function=TIME_SERIES_DAILY
-
-
-      - - "symbol": symbol, 
-required: symbol, required: symbol,
-The name of the equity of your choice. For example: symbol=IBM
-      
-      - - "outputsize": "compact",
-optional
-
-      - - "apikey": API_KEY, 
-required: "apikey"
-Your API key.\
-
-Claim your free API key [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
-
-
-
-A quick note at the end you can deactivate, to avoid 
-accidentally installing packages into wrong
-environment:
 ```commandline
-deactivate
+pytest -q
 ```
-And activate as you start again.
+Sample test file:
+tests/test_transform.py checks:
+
+ -- column naming and data types
+ -- ascending order bu date
+ -- filtering invalid values
+
+
+
 
 Future Improvements
 
  - - Add SQLite or Django ORM integration for persistent storage.
- - - Implement unit tests with pytest for cure functions.
- - - Provide data analysis and visualisation modules (matplotlib, Chart.js)
+ - - Visualize data using Matplotlib or Chart.js
+ - - Deploy automated testing with GitHub Actions CI
+ 
 
+Created by Annette
 
-Created by Annette demonstrating import, clean, transform & augment of financial data.
+Demonstrating data extraction, cleaning, transformation, 
+and loading using public financial APIs.
 
 
 
