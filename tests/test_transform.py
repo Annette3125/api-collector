@@ -1,5 +1,11 @@
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))  #repo root to python path
+
+
 import pandas as pd
-from get_data import _to_dataframe
+from api_collector.get_data import _to_dataframe
+
+
 
 def test_transform_basic():
     sample = {
