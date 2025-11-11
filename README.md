@@ -181,8 +181,27 @@ tests/test_transform.py checks:
  -- ascending order bu date
  -- filtering invalid values
 
+#### Run local PySpark ETL
 
 
+### Mini Spark ETL (local Databricks-style)
+
+- Reads `data/new/stock_data_latest.csv` with PySpark
+- Cleans invalid prices, computes daily `avg_price`
+- Aggregates mean price per `symbol`
+- Saves Parquet to `data/processed/stock_summary.parquet`
+
+
+
+- Make sure Java 17 is installed.
+- On macOS:
+```commandline
+  export JAVA_HOME="$(/usr/libexec/java_home -v 17)"
+  export SPARK_LOCAL_IP=127.0.0.1
+```
+
+ -- Activate venv and run:
+python -m api_collector.databricks_etl
 
 Future Improvements
 
