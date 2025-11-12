@@ -1,7 +1,9 @@
 import os
+
 import pytest
 
 pytestmark = pytest.mark.filterwarnings("ignore::UserWarning")
+
 
 def test_spark_module_imports():
     """Quick smoke test: is pyspark present, is the ETL module importing."""
@@ -12,6 +14,7 @@ def test_spark_module_imports():
 
     # if spark exist – check, our model is imported
     from api_collector import databricks_etl  # noqa:F401
+
 
 def test_latest_csv_exists_or_skip():
     """if exist `data/new/stock_data_latest.csv` - validate it; if not, skip it."""

@@ -76,7 +76,7 @@ python -m venv venv
 
 - For Linux/Mac:
 
-```commandline 
+```bash 
 source venv/bin/activate
 ```
 
@@ -88,24 +88,24 @@ source venv/bin/activate
 
 - For Windows CMD:
 
-```comandline
+```bash
 .venv\Scripts\activate.bat
 ```
 
 ## Upgrade pip (all OS)
-```commandline
+```bash
 python -m pip install --upgrade pip
 ```
 
 ## Dependencies
 
-```commandline
+```bash
 pip install -r requirements.txt
 ```
 
 ## Clone the Repo
 
-```commandline
+```bash
 git clone https://github.com/your-username/your-repo.git
 cd your-repo
 ```
@@ -113,7 +113,7 @@ cd your-repo
 ## Development
  - I use **Black** and **Isort** for code styling and formatting.
 
-```commandline
+```bash
 pip install black isort
 ```
 
@@ -139,14 +139,14 @@ You can get a free API key from [Alpha Vantage](https://youtu.be/uqUoILc_1NY?si=
 
 #### How to run script:
 
-```commandline
+```bash
 python get_data.py
 
 ```
 
 Run the daily schedular:
 
-```commandline
+```bash
 python scheduler.py
 ```
 Saves data/new/stock_data.csv with columns: date, open, high
@@ -165,13 +165,13 @@ data,open,high,low,close,volume,symbol
 
 #### How to run scheduler:
 
-```commandline
+```bash
 python scheduler.py
 ```
 
 🧪 Testing
 
-```commandline
+```bash
 pytest -q
 ```
 Sample test file:
@@ -195,9 +195,14 @@ tests/test_transform.py checks:
 
 - Make sure Java 17 is installed.
 - On macOS:
-```commandline
+```bash
   export JAVA_HOME="$(/usr/libexec/java_home -v 17)"
   export SPARK_LOCAL_IP=127.0.0.1
+```
+
+Alternatively, you can run the ETL directly using:
+```bash
+./scripts/run_spark.sh
 ```
 
  -- Activate venv and run:

@@ -1,8 +1,8 @@
 # get_data.py
-import os
-import time
 import json
 import logging
+import os
+import time
 from typing import List
 
 import pandas as pd
@@ -23,7 +23,9 @@ logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(message)s",
 )
 
-RATE_LIMIT_SLEEP = int(os.getenv("RATE_LIMIT_SLEEP", "15"))  # Alpha Vantage free: ~5 req/min
+RATE_LIMIT_SLEEP = int(
+    os.getenv("RATE_LIMIT_SLEEP", "15")
+)  # Alpha Vantage free: ~5 req/min
 
 
 def _fetch_daily_raw(symbol: str) -> dict:
@@ -107,7 +109,9 @@ def extract_transform(symbols: List[str]) -> pd.DataFrame:
         if df.empty:
             logging.warning(f"[{sym}] No data fetched.")
         else:
-            logging.info(f"[{sym}] Rows: {len(df)} | Date range: {df['date'].min()} → {df['date'].max()}")
+            logging.info(
+                f"[{sym}] Rows: {len(df)} | Date range: {df['date'].min()} → {df['date'].max()}"
+            )
             frames.append(df)
 
         # Respect API limits between calls

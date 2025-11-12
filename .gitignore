@@ -184,3 +184,20 @@ venv/
 # data snapshots
 data/new/
 !data/new/.keep
+
+# data artifacts
+data/new/*.csv
+data/processed/*
+!data/processed/.gitkeep
+*.pyc
+*.pyo
+*.DS_Store
+data/new/*.parquet
+
+data/processed/*.parquet
+
+
+# Spark output metadata
+data/processed/_SUCCESS
+data/processed/*.crc
+data/processed/part-*

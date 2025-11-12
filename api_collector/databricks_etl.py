@@ -3,13 +3,13 @@ import os
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, mean
 
-
 # Create session
 
-spark = SparkSession.builder \
-    .appName("StockDataETL") \
-    .config("spark.driver.memory", "2g") \
+spark = (
+    SparkSession.builder.appName("StockDataETL")
+    .config("spark.driver.memory", "2g")
     .getOrCreate()
+)
 
 # specify input file
 
@@ -25,16 +25,13 @@ df.show(5)
 
 # filter only valid values
 clean_df = df.filter(
-    (col("open") >= 0) &
-    (col("high") >= 0) &
-    (col("low") >= 0) &
-    (col("close") >= 0)
+    (col("open") >= 0) & (col("high") >= 0) & (col("low") >= 0) & (col("close") >= 0)
 )
 
 # count average price per day
 
 result_df = clean_df.withColumn(
-"avg_price", (col("open") + col("high") + col("low") + col("close")) / 4
+    "avg_price", (col("open") + col("high") + col("low") + col("close")) / 4
 )
 
 # group by symbol
@@ -51,4 +48,3 @@ agg_df.write.mode("overwrite").parquet(output_path + "stock_summary.parquet")
 print("Saved processed data to:", output_path)
 
 spark.stop()
-
