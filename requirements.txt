@@ -1,10 +1,13 @@
 black==25.1.0
+boto3==1.40.72
+botocore==1.40.72
 certifi==2025.4.26
 charset-normalizer==3.4.2
 click==8.2.1
 idna==3.10
 iniconfig==2.3.0
 isort==6.0.1
+jmespath==1.0.1
 mypy_extensions==1.1.0
 numpy==2.2.6
 packaging==25.0
@@ -21,6 +24,7 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.1.0
 pytz==2025.2
 requests==2.32.3
+s3transfer==0.14.0
 schedule==1.2.2
 six==1.17.0
 tzdata==2025.2
