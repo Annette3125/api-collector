@@ -1,27 +1,48 @@
-# API-collector
+# API Collector — ETL Pipeline (Python → CSV/Parquet → S3 → Spark)
 
-A small **ETL-style data pipeline** project that demonstrates data extraction, transformation, and loading using the **Alpha Vantage API**.
-
-The script collects daily stock data for several symbols, cleans and validates it, and saves both CSV and Parquet snapshots for further analysis.
-
+A small end-to-end ETL-style data pipeline demonstrating real-world data engineering:
+	•	Extract stock data from the Alpha Vantage API
+	•	Transform with Pandas (cleaning, validation, typing)
+	•	Load locally into CSV + Parquet
+	•	Optionally upload to AWS S3
+	•	Process with PySpark (local Databricks-style ETL)
+	•	Run tests via GitHub Actions CI
 ---
+
+ This project demonstrates how Python, CI, AWS, and Spark can work together in a small, clear, end-to-end data pipeline.
+
 
 ## 🧩 Features
 
 ### Extract
-- Fetches stock data from Alpha Vantage API (`TIME_SERIES_DAILY`)
-- Supports multiple symbols (configurable in `.env`)
-- Handles rate limits and API errors
+    • Pulls TIME_SERIES_DAILY stock data via Alpha Vantage API
+    • Supports multiple symbols (configurable in `.env`)
+    • Handles rate limits and HTTP errors
 
 ### Transform
-- Cleans and renames columns  
-- Converts types to numeric and datetime  
-- Removes duplicates and invalid values  
-- Sorts data in ascending date order
+	•	Renames and normalizes columns
+	•	Converts datatypes (numeric, datetime)
+	•	Drops invalid rows (negative or missing prices)
+	•	Sorts by date
 
 ### Load
-- Saves results to CSV and (optionally) Parquet  
-- Keeps a timestamped history and updates `stock_data_latest.csv`
+Load
+	•	Saves fresh snapshot as:
+	•	data/new/stock_data_latest.csv
+	•	timestamped history files
+	•	Parquet outputs for further analytics
+
+
+ Upload to AWS S3
+	•	Uses boto3
+	•	Stores processed CSV into S3 bucket:
+s3://annette-etl-data/raw/stock_data_latest.csv
+
+Spark ETL (local)
+	•	Reads CSV with PySpark
+	•	Computes average daily price
+	•	Aggregates mean price per symbol
+	•	Saves Parquet to data/processed/
 
 ---
 
@@ -33,7 +54,9 @@ The script collects daily stock data for several symbols, cleans and validates i
 - **python-dotenv** – environment management  
 - **Schedule / Logging** – automation & monitoring  
 - **Pytest** – unit testing  
-
+- **GitHub Actions CI** 
+- **(S3 + IAM + CLI)**
+- 
 ---
 
 ## ⚙️ Setup
@@ -46,20 +69,21 @@ Before you start, make sure you have:
 - [Python 3.11+](https://www.python.org/downloads/)
 - [Git](https://git-scm.com/downloads)
 
+##  Clone
+```bash
+git clone https://github.com/Annette3125/api-collector.git
+cd api-collector
+```
 
-### Installation Steps
+### Installation
 
-### Code Editor
-
-- A code editor or IDE of your choice
-- Recommended  PyCharm Community Edition or VS Code
+ Code Editor
+- A code editor or IDE of your choice 
+- Recommended  PyCharm Community Edition or VS Code 
 - Any editor that supports Python will work.
 
-
-## Installation
-
 ---
-### Create virtual environment in project's root directory:
+### Virtual environment
 - For Linux/Mac
 ```
 python3 -m venv venv
@@ -70,7 +94,6 @@ python3 -m venv venv
 ```
 python -m venv venv
 ```
-
 
 ### Activate the virtual environment
 
@@ -97,32 +120,16 @@ source venv/bin/activate
 python -m pip install --upgrade pip
 ```
 
-## Dependencies
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Clone the Repo
+🔑  Environment Variables
 
-```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
-```
-
-## Development
- - I use **Black** and **Isort** for code styling and formatting.
-
-```bash
-pip install black isort
-```
-
-
-🔑  Configuration
-#### Set environment variables:
-
+Set environment variables:
 Create .env file in the project's root directory and add environment variable to this file.
-
 Example '.env' file:
 
 ```                   
@@ -135,19 +142,22 @@ RATE_LIMIT_SLEEP=15
 
 You can get a free API key from [Alpha Vantage](https://youtu.be/uqUoILc_1NY?si=BGdpGAePwqGA4pTL)￼.
 
-▶️ Usage and Running
+▶️ Run Extract + Transform + Load
 
-#### How to run script:
 
 ```bash
-python get_data.py
+python -m api_collector.get_data
 
 ```
+
+Outputs:
+      •	data/new/stock_data_latest.csv 
+      •	timestamped CSV + Parquet history
 
 Run the daily schedular:
 
 ```bash
-python scheduler.py
+python -m api_collector.scheduler
 ```
 Saves data/new/stock_data.csv with columns: date, open, high
 CSV file will be generated in directory data/new/.
@@ -163,59 +173,79 @@ data,open,high,low,close,volume,symbol
 2025-11-10,500.035,506.85,498.8,506.0,26045011,MSFT
 ```
 
-#### How to run scheduler:
+
+☁️ AWS S3 Integration
+
+Configure AWS CLI
+```bash
+aws configure
+```
+You need:
+	•	Access Key
+	•	Secret Key
+	•	Region (eu-north-1)
+
+
+Upload latest CSV to S3
+```bash
+python -m api_collector.upload_to_s3
+```
+
+File appears at:
+```bash
+s3://annette-etle-data/raw/stock_data_latest.csv
+
+```
+
+🔥 Local Spark ETL (Databricks-style)
+
+macOS prerequisites
+```bash
+export JAVA_HOME="$(/usr/libexec/java_home -v 17)"
+export SPARK_LOCAL_IP=127.0.0.1
+```
+
+
+Run ETL 
 
 ```bash
-python scheduler.py
+python -m api_collector.databricks_etl
 ```
+or via script:
+
+```bash
+./scripts/run_spark.sh
+```
+
+data/processed/stock_summary.parquet
+
 
 🧪 Testing
 
 ```bash
 pytest -q
 ```
-Sample test file:
-tests/test_transform.py checks:
-
- -- column naming and data types
- -- ascending order bu date
- -- filtering invalid values
-
-#### Run local PySpark ETL
+CI runs automatically on every GitHub push.
 
 
-### Mini Spark ETL (local Databricks-style)
-
-- Reads `data/new/stock_data_latest.csv` with PySpark
-- Cleans invalid prices, computes daily `avg_price`
-- Aggregates mean price per `symbol`
-- Saves Parquet to `data/processed/stock_summary.parquet`
-
-
-
-- Make sure Java 17 is installed.
-- On macOS:
-```bash
-  export JAVA_HOME="$(/usr/libexec/java_home -v 17)"
-  export SPARK_LOCAL_IP=127.0.0.1
-```
 
 Alternatively, you can run the ETL directly using:
 ```bash
 ./scripts/run_spark.sh
 ```
 
- -- Activate venv and run:
-python -m api_collector.databricks_etl
+🚀 Future Improvements
 
-Future Improvements
-
- - - Add SQLite or Django ORM integration for persistent storage.
- - - Visualize data using Matplotlib or Chart.js
- - - Deploy automated testing with GitHub Actions CI
+- Upload processed Parquet to AWS S3
+- Add Athena table definitions (run SQL on S3 data)
+- Build Airflow or Prefect DAG for scheduling
+- Add SQLite or Django ORM for persistent storage
+- Add dashboards (Streamlit)
+- Deploy a small FastAPI service to AWS
  
+✨ Author
 
-Created by Annette
+Created by Annette 💙
 
 Demonstrating data extraction, cleaning, transformation, 
 and loading using public financial APIs.
