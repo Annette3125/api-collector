@@ -4,18 +4,26 @@ from pathlib import Path
 
 import boto3
 from botocore.exceptions import ClientError
+from dotenv import load_dotenv
 
-# real bucket name
-BUCKET_NAME = "annette-etl-data"
-S3_KEY = "raw/stock_data_latest.csv"  # way inside S3
-LOCAL_PATH = Path("data/new/stock_data_latest.csv")
+load_dotenv()
+
+LOCAL_PATH = Path(os.getenv("LOCAL_PATH", "data/new/stock_data_latest.csv"))
+BUCKET_NAME = os.getenv("S3_BUCKET_NAME", "")
+S3_KEY = os.getenv("S3_KEY", "raw/stock_data_latest.csv")
 
 
 def upload_latest_to_s3() -> bool:
     """
-    Uploads latest CSV (data/new/stock_data_latest.csv) to S3 bucket.
-    Credentials use from `aws configure`.
+    Upload latest CSV to S3 (optional).
+    Requires:
+      - aws credentials configured (aws configure) OR IAM role
+      - S3_BUCKET_NAME set in .env
     """
+    if not BUCKET_NAME:
+        logging.error("Missing S3_BUCKET_NAME in .env. Skipping upload.")
+        return False
+
     if not LOCAL_PATH.exists():
         logging.error(f"Local file not found: {LOCAL_PATH}")
         return False
@@ -34,10 +42,7 @@ def upload_latest_to_s3() -> bool:
 
 
 def main():
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(message)s",
-    )
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
     upload_latest_to_s3()
 
 
