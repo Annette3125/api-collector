@@ -176,6 +176,7 @@ CI runs automatically on every GitHub push.
 
  ## 🚀 Future improvements
 
+- Upload processed Parquet to S3
 - Orchestrator (Airflow/Prefect)
 - Streamlit dashboard
 - Small FastAPI service for querying results
