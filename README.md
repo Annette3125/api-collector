@@ -175,8 +175,7 @@ CI runs automatically on every GitHub push.
 
 
  ## 🚀 Future improvements
-- Upload processed Parquet to S3
-- Athena tables on S3 data
+
 - Orchestrator (Airflow/Prefect)
 - Streamlit dashboard
 - Small FastAPI service for querying results
