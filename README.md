@@ -9,7 +9,7 @@ A small end-to-end ETL-style data pipeline demonstrating real-world data enginee
 	-	Run tests via GitHub Actions CI
 ---
 
- This project demonstrates how Python, CI, AWS, and Spark can work together in a small, clear, end-to-end data pipeline.
+This project demonstrates how Python, CI, AWS, and Spark can work together in a small, clear, end-to-end data pipeline.
 
 ## Quick start
 ```bash
@@ -24,6 +24,16 @@ python -m api_collector.get_data
 
 Expected: creates `data/new/stock_data_latest.csv` and timestamped CSV/Parquet snapshots.
 
+## Example run output
+
+![Example run output](screenshots/run-output.png)
+
+
+Pipeline: Alpha Vantage → get_data.py → CSV/Parquet → (optional) S3 → (optional) Spark summary → tests/CI.
+
+
+Output contract: CSV columns are always: `date, open, high, low, close, volume, symbol`.
+
 
 ## 🧩 Features
 
@@ -35,17 +45,17 @@ Expected: creates `data/new/stock_data_latest.csv` and timestamped CSV/Parquet s
 
 ### Transform
 
--	Renames and normalizes columns
--	Converts datatypes (numeric, datetime)
--	Drops invalid rows (negative or missing prices)
--	Sorts by date, removes duplicates
+- Renames and normalizes columns
+- Converts datatypes (numeric, datetime)
+- Drops invalid rows (negative or missing prices)
+- Sorts by date, removes duplicates
 
 ### Load
 
 -	Saves fresh snapshot as:
-	-	data/new/stock_data_latest.csv
-	-	timestamped history files
-	-	Parquet outputs for further analytics
+	- data/new/stock_data_latest.csv
+	- timestamped history files
+	- Parquet outputs for further analytics
 
 ### Output
 
@@ -59,8 +69,8 @@ date,open,high,low,close,volume,symbol
 
 ### Prerequisites
 
--	Python 3.11+
--	Git
+- Python 3.11+
+- Git
 
 
 Environment variables
@@ -91,9 +101,9 @@ python -m api_collector.get_data
 
 Sample output files 
 
--	data/new/stock_data_latest.csv
--	data/new/stock_data_<timestamp>.csv
--	data/new/stock_data_<timestamp>.parquet
+- data/new/stock_data_latest.csv
+- data/new/stock_data_<timestamp>.csv
+- data/new/stock_data_<timestamp>.parquet
 
 Timestamp format: `YYYYMMDD_HHMMSS` (UTC).
 
@@ -112,7 +122,7 @@ python -m api_collector.scheduler
 aws configure
 ```
 
-Requires AWS credentials configured locally (or IAM role) and `S3_BUCKET_NAME` set in `.env`.
+To use S3 upload, configure AWS credentials locally (or use an IAM role) and set `S3_BUCKET_NAME` in `.env`.
 
 2. Set S3 bucket in .env:
 
@@ -152,9 +162,7 @@ or:
 ./scripts/run_spark.sh
 ```
 
-Output:
-
--	data/processed/stock_summary.parquet
+Output: `data/processed/stock_summary.parquet`
 
  
 ## 🧪 Tests
@@ -167,11 +175,11 @@ CI runs automatically on every GitHub push.
 
 
  ## 🚀 Future improvements
--	Upload processed Parquet to S3
--	Athena tables on S3 data
--	Orchestrator (Airflow/Prefect)
--	Streamlit dashboard
--	Small FastAPI service for querying results
+- Upload processed Parquet to S3
+- Athena tables on S3 data
+- Orchestrator (Airflow/Prefect)
+- Streamlit dashboard
+- Small FastAPI service for querying results
 
 
 
