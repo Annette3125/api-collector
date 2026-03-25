@@ -26,7 +26,7 @@ Expected: creates `data/new/stock_data_latest.csv` and timestamped CSV/Parquet s
 
 ## Example run output
 
-![Example run output](screenshots/run-output.png)
+![Example run output](screenshots/api-collector-output.png)
 
 
 Pipeline: Alpha Vantage → get_data.py → CSV/Parquet → (optional) S3 → (optional) Spark summary → tests/CI.
