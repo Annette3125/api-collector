@@ -20,8 +20,8 @@ def safe_job():
 schedule.every().day.at("18:00").do(
     safe_job
 )  # runs and extract every day new documents
-logging.info("Schedular started. Job planned at 18:00 (local time).")
-print("Schedular runs daily at 18:00.")
+logging.info("Scheduler started. Job planned at 18:00 (local time).")
+print("Scheduler runs daily at 18:00.")
 
 
 while True:
